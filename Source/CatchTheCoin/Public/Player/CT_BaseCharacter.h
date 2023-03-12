@@ -6,6 +6,8 @@
 #include "GameFramework/Character.h"
 #include "CT_BaseCharacter.generated.h"
 
+class UCameraComponent;
+
 UCLASS()
 class CATCHTHECOIN_API ACT_BaseCharacter : public ACharacter
 {
@@ -16,8 +18,12 @@ public:
 	ACT_BaseCharacter();
 
 protected:
-	// Called when the game starts or when spawned
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
+		UCameraComponent* CameraComponent;
+
 	virtual void BeginPlay() override;
+
 
 public:	
 	// Called every frame
@@ -26,4 +32,8 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+private:
+
+	void MoveForward(float Amount);
+	void MoveRight(float Amount);
 };
