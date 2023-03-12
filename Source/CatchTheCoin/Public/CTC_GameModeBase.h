@@ -13,5 +13,7 @@ UCLASS()
 class CATCHTHECOIN_API ACTC_GameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
-	
+public:
+	ACTC_GameModeBase();
+
 };
