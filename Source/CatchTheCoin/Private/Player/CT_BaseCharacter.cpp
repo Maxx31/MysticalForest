@@ -36,7 +36,7 @@ void ACT_BaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 	PlayerInputComponent->BindAxis("MoveRight", this, &ACT_BaseCharacter::MoveRight);
 	PlayerInputComponent->BindAxis("LookUp", this, &ACT_BaseCharacter::AddControllerPitchInput);
 	PlayerInputComponent->BindAxis("TurnAround", this, &ACT_BaseCharacter::AddControllerYawInput);
-	//PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ASTUBaseCharacter::Jump);
+	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACT_BaseCharacter::Jump);
 	PlayerInputComponent->BindAction("Run", IE_Pressed, this, &ACT_BaseCharacter::OnStartRunning);
 	PlayerInputComponent->BindAction("Run", IE_Released, this, &ACT_BaseCharacter::OnStopRunning);
 }
