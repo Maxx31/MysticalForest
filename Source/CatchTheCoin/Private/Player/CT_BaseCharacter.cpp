@@ -33,9 +33,9 @@ void ACT_BaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
 	PlayerInputComponent->BindAxis("MoveForward", this, &ACT_BaseCharacter::MoveForward);
-	//PlayerInputComponent->BindAxis("MoveRight", this, &ASTUBaseCharacter::MoveRight);
-	//PlayerInputComponent->BindAxis("LookUp", this, &ASTUBaseCharacter::AddControllerPitchInput);
-	//PlayerInputComponent->BindAxis("TurnAround", this, &ASTUBaseCharacter::AddControllerYawInput);
+	PlayerInputComponent->BindAxis("MoveRight", this, &ACT_BaseCharacter::MoveRight);
+	PlayerInputComponent->BindAxis("LookUp", this, &ACT_BaseCharacter::AddControllerPitchInput);
+	PlayerInputComponent->BindAxis("TurnAround", this, &ACT_BaseCharacter::AddControllerYawInput);
 	//PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ASTUBaseCharacter::Jump);
 	//PlayerInputComponent->BindAction("Run", IE_Pressed, this, &ASTUBaseCharacter::OnStartRunning);
 	//PlayerInputComponent->BindAction("Run", IE_Released, this, &ASTUBaseCharacter::OnStopRunning);
@@ -44,12 +44,12 @@ void ACT_BaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 
 void ACT_BaseCharacter::MoveForward(float Amount)
 {
-	UE_LOG(LogTemp, Warning, TEXT("MOVING"));
-
+	if (Amount == 0.0f)return;
+	AddMovementInput(GetActorForwardVector(), Amount);
 }
 void ACT_BaseCharacter::MoveRight(float Amount)
 {
-	
-
+	if (Amount == 0.0f)return;
+	AddMovementInput(GetActorRightVector(), Amount);
 }
 
