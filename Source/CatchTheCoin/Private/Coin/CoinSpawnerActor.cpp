@@ -13,20 +13,23 @@ ACoinSpawnerActor::ACoinSpawnerActor()
 // Called when the game starts or when spawned
 void ACoinSpawnerActor::BeginPlay()
 {
-
 	UE_LOG(LogTemp, Warning, TEXT("Spawning actor"));
 
-	FVector SpawnLocation =  FVector(-740, -1980, 420); 
-	FVector SpawnRotation =  FVector(0, 0, 0);
-
-	AActor* NewActor = GetWorld()->SpawnActor<AActor>(CoinClass, SpawnLocation, FRotator::ZeroRotator);
-
-
+	for(int i = 0; i< 10; i++)
+	SpawnCoin();
 }
 
 // Called every frame
 void ACoinSpawnerActor::Tick(float DeltaTime)
 {
 
+}
+
+void ACoinSpawnerActor::SpawnCoin() 
+{
+	FVector SpawnLocation = FVector(FMath::FRandRange(xMin, xMax), FMath::FRandRange(yMin, yMax), FMath::FRandRange(zMin, zMax));
+	FVector SpawnRotation = FVector(0, 0, 0);
+
+	AActor* NewActor = GetWorld()->SpawnActor<AActor>(CoinClass, SpawnLocation, FRotator::ZeroRotator);
 }
 

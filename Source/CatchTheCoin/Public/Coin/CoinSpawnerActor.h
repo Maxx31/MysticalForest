@@ -11,11 +11,6 @@ UCLASS()
 class CATCHTHECOIN_API ACoinSpawnerActor : public AActor
 {
 	GENERATED_BODY()
-	
-
-public:	
-	// Sets default values for this actor's properties
-	ACoinSpawnerActor();
 
 protected:
 
@@ -25,8 +20,25 @@ protected:
 	virtual void BeginPlay() override;
 
 public:	
+
+	ACoinSpawnerActor();
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Coins spawn transform")
+	float xMin;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Coins spawn transform")
+	float xMax;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Coins spawn transform")
+	float yMin;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Coins spawn transform")
+	float yMax;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Coins spawn transform")
+	float zMin;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Coins spawn transform")
+	float zMax;
+	
+
 private:
+	void SpawnCoin();
 };
