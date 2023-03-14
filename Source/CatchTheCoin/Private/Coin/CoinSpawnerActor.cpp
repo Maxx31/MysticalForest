@@ -19,7 +19,6 @@ void ACoinSpawnerActor::BeginPlay()
 	SpawnCoin();
 }
 
-// Called every frame
 void ACoinSpawnerActor::Tick(float DeltaTime)
 {
 
@@ -28,7 +27,7 @@ void ACoinSpawnerActor::Tick(float DeltaTime)
 void ACoinSpawnerActor::SpawnCoin() 
 {
 	FVector SpawnLocation = FVector(FMath::FRandRange(xMin, xMax), FMath::FRandRange(yMin, yMax), FMath::FRandRange(zMin, zMax));
-	FVector SpawnRotation = FVector(0, 0, 0);
+	//FVector SpawnRotation = FVector(0, 0, FMath::FRandRange(0, 360));
 
 	AActor* NewActor = GetWorld()->SpawnActor<AActor>(CoinClass, SpawnLocation, FRotator::ZeroRotator);
 }
