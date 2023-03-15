@@ -23,6 +23,9 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	UFUNCTION(BlueprintCallable, Category = "Movement")
+	float GetScore() const;
+
+	UFUNCTION(BlueprintCallable, Category = "Movement")
 	bool IsRunning() const;
 
 	void AddCoin();

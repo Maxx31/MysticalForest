@@ -75,3 +75,8 @@ void ACT_BaseCharacter::AddCoin()
 	CurrScore++;
 	UE_LOG(LogTemp, Warning, TEXT("Curr score = %d"), CurrScore);
 }
+
+float ACT_BaseCharacter::GetScore() const
+{
+	return CurrScore;
+}
