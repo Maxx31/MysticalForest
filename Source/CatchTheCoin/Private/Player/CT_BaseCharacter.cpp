@@ -48,6 +48,7 @@ void ACT_BaseCharacter::MoveForward(float Amount)
 	if (Amount == 0.0f)return;
 	AddMovementInput(GetActorForwardVector(), Amount);
 }
+
 void ACT_BaseCharacter::MoveRight(float Amount)
 {
 	if (Amount == 0.0f)return;
