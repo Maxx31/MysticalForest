@@ -17,16 +17,6 @@ public:
 	// Sets default values for this character's properties
 	ACT_BaseCharacter(const FObjectInitializer& Object);
 
-protected:
-	
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
-		UCameraComponent* CameraComponent;
-
-	virtual void BeginPlay() override;
-
-
-public:	
-	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 	// Called to bind functionality to input
@@ -35,8 +25,19 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Movement")
 	bool IsRunning() const;
 
+	void AddCoin();
+
+protected:
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
+		UCameraComponent* CameraComponent;
+
+	virtual void BeginPlay() override;
+
 
 private:
+	int CurrScore = 0;
+
 	bool WantsToRun = false;
 	bool IsMovingForward = false;
 

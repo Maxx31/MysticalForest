@@ -68,3 +68,9 @@ bool ACT_BaseCharacter::IsRunning() const
 {
 	return WantsToRun && IsMovingForward && !GetVelocity().IsZero();
 }
+
+void ACT_BaseCharacter::AddCoin()
+{
+	CurrScore++;
+	UE_LOG(LogTemp, Warning, TEXT("Curr score = %d"), CurrScore);
+}
