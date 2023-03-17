@@ -2,6 +2,7 @@
 
 #include "Coin/CoinSpawnerActor.h"
 #include "Coin/CoinActor.h"
+#include "Engine/World.h"
 #include "Kismet/GameplayStatics.h"
 // Sets default values
 ACoinSpawnerActor::ACoinSpawnerActor()
@@ -15,13 +16,18 @@ void ACoinSpawnerActor::BeginPlay()
 {
 	UE_LOG(LogTemp, Warning, TEXT("Spawning actor"));
 
-	for(int i = 0; i< 10; i++)
-	SpawnCoin();
+	StartSpawning();
 }
 
 void ACoinSpawnerActor::Tick(float DeltaTime)
 {
 
+}
+
+void ACoinSpawnerActor::StartSpawning()
+{
+	SpawnCoin();
+	GetWorldTimerManager().SetTimer(SpawnTimerHandler, this, &ACoinSpawnerActor::SpawnCoin, TimeBetweenSpawn, true);
 }
 
 void ACoinSpawnerActor::SpawnCoin() 
@@ -31,4 +37,5 @@ void ACoinSpawnerActor::SpawnCoin()
 
 	AActor* NewActor = GetWorld()->SpawnActor<AActor>(CoinClass, SpawnLocation, FRotator::ZeroRotator);
 }
+
 

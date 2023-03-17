@@ -38,7 +38,12 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Coins spawn transform")
 	float zMax;
 	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Coins spawn params")
+	float TimeBetweenSpawn;
 
 private:
 	void SpawnCoin();
+	void StartSpawning();
+
+	FTimerHandle SpawnTimerHandler;
 };
