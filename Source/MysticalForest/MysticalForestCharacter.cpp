@@ -2,6 +2,7 @@
 
 #include "MysticalForestCharacter.h"
 #include "MysticalForestProjectile.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "Animation/AnimInstance.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
@@ -19,7 +20,8 @@ AMysticalForestCharacter::AMysticalForestCharacter()
 	
 	// Set size for collision capsule
 	GetCapsuleComponent()->InitCapsuleSize(55.f, 96.0f);
-		
+
+	MovementComponent = GetCharacterMovement();
 	// Create a CameraComponent	
 	FirstPersonCameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("FirstPersonCamera"));
 	FirstPersonCameraComponent->SetupAttachment(GetCapsuleComponent());
@@ -66,6 +68,8 @@ void AMysticalForestCharacter::SetupPlayerInputComponent(class UInputComponent* 
 
 		//Moving
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AMysticalForestCharacter::Move);
+		EnhancedInputComponent->BindAction(BoostAction, ETriggerEvent::Triggered, this, &AMysticalForestCharacter::Boost);
+		EnhancedInputComponent->BindAction(BoostAction, ETriggerEvent::Completed, this, &AMysticalForestCharacter::StopBoost);
 
 		//Looking
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &AMysticalForestCharacter::Look);
@@ -75,7 +79,6 @@ void AMysticalForestCharacter::SetupPlayerInputComponent(class UInputComponent* 
 
 void AMysticalForestCharacter::Move(const FInputActionValue& Value)
 {
-	// input is a Vector2D
 	FVector2D MovementVector = Value.Get<FVector2D>();
 
 	if (Controller != nullptr)
@@ -83,6 +86,22 @@ void AMysticalForestCharacter::Move(const FInputActionValue& Value)
 		// add movement 
 		AddMovementInput(GetActorForwardVector(), MovementVector.Y );
 		AddMovementInput(GetActorRightVector(), MovementVector.X);
+	}
+}
+
+void AMysticalForestCharacter::Boost(const FInputActionValue& Value)
+{
+	if (MovementComponent != nullptr)
+	{
+		MovementComponent->MaxWalkSpeed = CharacterRunMovementSpeed;
+	}
+}
+
+void AMysticalForestCharacter::StopBoost(const FInputActionValue& Value)
+{
+	if (MovementComponent != nullptr)
+	{
+		MovementComponent->MaxWalkSpeed = CharacterDefaultMovementSpeed;
 	}
 }
 
