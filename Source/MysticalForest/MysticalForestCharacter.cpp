@@ -56,6 +56,13 @@ void AMysticalForestCharacter::BeginPlay()
 
 }
 
+void AMysticalForestCharacter::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+
+	CheckForInteractables();
+}
+
 //////////////////////////////////////////////////////////////////////////// Input
 
 void AMysticalForestCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent)
@@ -117,6 +124,18 @@ void AMysticalForestCharacter::Look(const FInputActionValue& Value)
 		AddControllerYawInput(LookAxisVector.X);
 		AddControllerPitchInput(LookAxisVector.Y);
 	}
+}
+
+void AMysticalForestCharacter::ToggleInventory()
+{
+}
+
+void AMysticalForestCharacter::Interact()
+{
+}
+
+void AMysticalForestCharacter::CheckForInteractables()
+{
 }
 
 void AMysticalForestCharacter::SetHasRifle(bool bNewHasRifle)

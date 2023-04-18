@@ -57,6 +57,7 @@ public:
 
 protected:
 	virtual void BeginPlay();
+	virtual void Tick(float DeltaTime) override;
 
 public:
 		
@@ -84,6 +85,12 @@ protected:
 
 	/** Called for looking input */
 	void Look(const FInputActionValue& Value);
+
+	/** Called for interecting with inventory */
+	void ToggleInventory();
+	void Interact();
+
+	void CheckForInteractables();
 
 protected:
 	// APawn interface
