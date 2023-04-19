@@ -14,6 +14,7 @@ class UCameraComponent;
 class UAnimMontage;
 class USoundBase;
 class AInteractable;
+class APickup;
 
 UCLASS(config=Game)
 class AMysticalForestCharacter : public ACharacter
@@ -62,16 +63,15 @@ class AMysticalForestCharacter : public ACharacter
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Inventory, meta = (AllowPrivateAccess = "true"))
 	float RichOfLaneTraceInteraction = 250;
-	
-public:
-	AMysticalForestCharacter();
+
 
 protected:
 	virtual void BeginPlay();
 	virtual void Tick(float DeltaTime) override;
 
 public:
-		
+	AMysticalForestCharacter();
+	 
 	/** Look Input Action */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	class UInputAction* LookAction;
@@ -87,6 +87,21 @@ public:
 	/** Getter for the bool */
 	UFUNCTION(BlueprintCallable, Category = Weapon)
 	bool GetHasRifle();
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "HUD")
+	FString HelpText;
+
+	UFUNCTION(BlueprintPure, Category = "Inventory")
+	bool AddItemToInventory(APickup* Item);
+
+	UFUNCTION(BlueprintPure, Category = "Inventory")
+	UTexture2D* GetThumbnailAtInventorySlot(int32 Slot);
+
+	UFUNCTION(BlueprintPure, Category = "Inventory")
+	FString GetItemNameAtInventorySlot(int32 Slot);
+
+	UFUNCTION(BlueprintPure, Category = "Inventory")
+	bool UseItemAtInventorySlot(int32 Slot);
 
 protected:
 	/** Called for movement input */
@@ -105,9 +120,11 @@ protected:
 
 	void CheckForInteractables();
 
-	FString HelpText; 
 
 	AInteractable* CurrentInteractable;
+
+	UPROPERTY(EditAnywhere)
+	TArray<APickup*>Inventory;
 
 public:
 	/** Returns Mesh1P subobject **/

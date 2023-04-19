@@ -172,6 +172,42 @@ void AMysticalForestCharacter::CheckForInteractables()
 	}
 }
 
+bool AMysticalForestCharacter::AddItemToInventory(APickup* Item)
+{
+	if (Item != nullptr) 
+	{
+		const int32 AvailableSlot = Inventory.Find(nullptr);
+
+		if (AvailableSlot != INDEX_NONE)
+		{
+			Inventory[AvailableSlot] = Item;
+			return true;
+		}
+		else
+		{
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("You cant carry any more item!"));
+			return false;
+		}
+	}
+	else return false;
+}
+
+UTexture2D* AMysticalForestCharacter::GetThumbnailAtInventorySlot(int32 Slot)
+{
+	return nullptr;
+}
+
+FString AMysticalForestCharacter::GetItemNameAtInventorySlot(int32 Slot)
+{
+	return FString();
+}
+
+bool AMysticalForestCharacter::UseItemAtInventorySlot(int32 Slot)
+{
+
+	return false;
+}
+
 void AMysticalForestCharacter::SetHasRifle(bool bNewHasRifle)
 {
 	bHasRifle = bNewHasRifle;
@@ -181,3 +217,4 @@ bool AMysticalForestCharacter::GetHasRifle()
 {
 	return bHasRifle;
 }
+
