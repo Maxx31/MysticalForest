@@ -6,6 +6,7 @@
 #include "Animation/AnimInstance.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "Inventory/Interactable.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 
@@ -81,6 +82,10 @@ void AMysticalForestCharacter::SetupPlayerInputComponent(class UInputComponent* 
 
 		//Looking
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &AMysticalForestCharacter::Look);
+
+		//Inventory
+		EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Triggered, this, &AMysticalForestCharacter::Interact);
+		EnhancedInputComponent->BindAction(OpenInventoryAction, ETriggerEvent::Triggered, this, &AMysticalForestCharacter::ToggleInventory);
 	}
 }
 
@@ -128,14 +133,45 @@ void AMysticalForestCharacter::Look(const FInputActionValue& Value)
 
 void AMysticalForestCharacter::ToggleInventory()
 {
+	GLog->Log("Toggle Inventory()");
+	// Code to open Inventory
 }
 
 void AMysticalForestCharacter::Interact()
 {
+	GLog->Log("Interact with Item");
+	if (CurrentInteractable != nullptr)
+	{
+		CurrentInteractable->Interact_Implementation();
+	}
 }
 
 void AMysticalForestCharacter::CheckForInteractables()
 {
+	//Throw a line trace and see, if it hits something
+	FVector StartTrace = FirstPersonCameraComponent->GetComponentLocation();
+	FVector EndTrace = (FirstPersonCameraComponent->GetForwardVector() * RichOfLaneTraceInteraction) + StartTrace;
+
+	FHitResult HitResult;
+
+	FCollisionQueryParams CQP;
+	CQP.AddIgnoredActor(this);
+
+	GetWorld()->LineTraceSingleByChannel(HitResult, StartTrace, EndTrace, ECC_WorldDynamic, CQP);
+
+	AInteractable* Interactable = Cast<AInteractable>(HitResult.GetActor());
+
+	if (Interactable == NULL)
+	{
+		HelpText = FString("");
+		CurrentInteractable = nullptr;
+		return;
+	}
+	else
+	{
+		CurrentInteractable = Interactable;
+		HelpText = Interactable->InteractableHelpText;
+	}
 }
 
 void AMysticalForestCharacter::SetHasRifle(bool bNewHasRifle)

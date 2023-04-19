@@ -13,6 +13,7 @@ class USceneComponent;
 class UCameraComponent;
 class UAnimMontage;
 class USoundBase;
+class AInteractable;
 
 UCLASS(config=Game)
 class AMysticalForestCharacter : public ACharacter
@@ -45,12 +46,22 @@ class AMysticalForestCharacter : public ACharacter
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
 	class UInputAction* BoostAction;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
+	/** Inventory Input Action */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	class UInputAction* InteractAction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	class UInputAction* OpenInventoryAction;
+
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Camera, meta = (AllowPrivateAccess = "true"))
 		float CharacterDefaultMovementSpeed = 450;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Camera, meta = (AllowPrivateAccess = "true"))
 		float CharacterRunMovementSpeed = 650;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Inventory, meta = (AllowPrivateAccess = "true"))
+	float RichOfLaneTraceInteraction = 250;
 	
 public:
 	AMysticalForestCharacter();
@@ -79,6 +90,8 @@ public:
 
 protected:
 	/** Called for movement input */
+	virtual void SetupPlayerInputComponent(UInputComponent* InputComponent) override;
+
 	void Move(const FInputActionValue& Value);
 	void Boost(const FInputActionValue& Value);
 	void StopBoost(const FInputActionValue& Value);
@@ -92,10 +105,9 @@ protected:
 
 	void CheckForInteractables();
 
-protected:
-	// APawn interface
-	virtual void SetupPlayerInputComponent(UInputComponent* InputComponent) override;
-	// End of APawn interface
+	FString HelpText; 
+
+	AInteractable* CurrentInteractable;
 
 public:
 	/** Returns Mesh1P subobject **/
