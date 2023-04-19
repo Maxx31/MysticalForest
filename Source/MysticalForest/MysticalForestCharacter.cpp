@@ -133,13 +133,11 @@ void AMysticalForestCharacter::Look(const FInputActionValue& Value)
 
 void AMysticalForestCharacter::ToggleInventory()
 {
-	GLog->Log("Toggle Inventory()");
 	// Code to open Inventory
 }
 
 void AMysticalForestCharacter::Interact()
 {
-	GLog->Log("Interact with Item");
 	if (CurrentInteractable != nullptr)
 	{
 		CurrentInteractable->Interact_Implementation();

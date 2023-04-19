@@ -11,8 +11,21 @@ class AMysticalForestGameMode : public AGameModeBase
 {
 	GENERATED_BODY()
 
+	virtual void BeginPlay() override;
+
 public:
 	AMysticalForestGameMode();
+
+	UUserWidget* AddHUD(TSubclassOf<class UUserWidget>WidgetToApply, bool bShowMouseCursor, bool EnableCLickEvents);
+
+protected:
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "HUD Widgets")
+	TSubclassOf<class UUserWidget> IngameHUDClass;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "HUD Widgets")
+	TSubclassOf<class UUserWidget> InventoryHUDClass;
+
 };
 
 
