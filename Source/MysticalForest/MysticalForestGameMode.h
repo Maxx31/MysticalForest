@@ -6,6 +6,7 @@
 #include "GameFramework/GameModeBase.h"
 #include "MysticalForestGameMode.generated.h"
 
+
 UCLASS(minimalapi)
 class AMysticalForestGameMode : public AGameModeBase
 {
@@ -15,8 +16,12 @@ class AMysticalForestGameMode : public AGameModeBase
 
 public:
 	AMysticalForestGameMode();
+	UUserWidget* AddHUD(TSubclassOf<class UUserWidget>WidgetToApply, bool bShowMouseCursor, bool EnableCLickEvents, bool AddToViewport = true);
 
-	UUserWidget* AddHUD(TSubclassOf<class UUserWidget>WidgetToApply, bool bShowMouseCursor, bool EnableCLickEvents);
+	bool IsInventoryOpened = false;
+
+	void OpenInventoryWidget();
+	void CloseInventoryWidget();
 
 protected:
 
@@ -25,6 +30,9 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "HUD Widgets")
 	TSubclassOf<class UUserWidget> InventoryHUDClass;
+
+	UUserWidget* InventoryUserWidget;
+	APlayerController* Controller;
 
 };
 

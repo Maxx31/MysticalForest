@@ -25,9 +25,11 @@ void APickup::Interact_Implementation()
 {
 	AMysticalForestCharacter* Character = Cast<AMysticalForestCharacter>(UGameplayStatics::GetPlayerCharacter(this, 0)); 
 
-	//Here we place new Item to Inventory
+	if (Character->AddItemToInventory(this))
+	{
+		OnPickedUp();
+	}
 
-	OnPickedUp();
 }
 
 void APickup::Use_Implementation()

@@ -7,6 +7,8 @@
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Inventory/Interactable.h"
+#include "Inventory/Pickup.h"
+#include "MysticalForestGameMode.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 
@@ -55,6 +57,9 @@ void AMysticalForestCharacter::BeginPlay()
 		}
 	}
 
+	Inventory.SetNum(4);
+
+	CurrentInteractable = nullptr;
 }
 
 void AMysticalForestCharacter::Tick(float DeltaTime)
@@ -77,15 +82,15 @@ void AMysticalForestCharacter::SetupPlayerInputComponent(class UInputComponent* 
 
 		//Moving
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AMysticalForestCharacter::Move);
-		EnhancedInputComponent->BindAction(BoostAction, ETriggerEvent::Triggered, this, &AMysticalForestCharacter::Boost);
+		EnhancedInputComponent->BindAction(BoostAction, ETriggerEvent::Started, this, &AMysticalForestCharacter::Boost);
 		EnhancedInputComponent->BindAction(BoostAction, ETriggerEvent::Completed, this, &AMysticalForestCharacter::StopBoost);
 
 		//Looking
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &AMysticalForestCharacter::Look);
 
 		//Inventory
-		EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Triggered, this, &AMysticalForestCharacter::Interact);
-		EnhancedInputComponent->BindAction(OpenInventoryAction, ETriggerEvent::Triggered, this, &AMysticalForestCharacter::ToggleInventory);
+		EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Started, this, &AMysticalForestCharacter::Interact);
+		EnhancedInputComponent->BindAction(OpenInventoryAction, ETriggerEvent::Started, this, &AMysticalForestCharacter::ToggleInventory);
 	}
 }
 
@@ -133,7 +138,16 @@ void AMysticalForestCharacter::Look(const FInputActionValue& Value)
 
 void AMysticalForestCharacter::ToggleInventory()
 {
-	// Code to open Inventory
+	AMysticalForestGameMode* GameMode = Cast<AMysticalForestGameMode>(GetWorld()->GetAuthGameMode());
+
+	if (GameMode->IsInventoryOpened)
+	{
+		GameMode->CloseInventoryWidget();
+	}
+	else
+	{
+		GameMode->OpenInventoryWidget();
+	}
 }
 
 void AMysticalForestCharacter::Interact()
@@ -180,6 +194,7 @@ bool AMysticalForestCharacter::AddItemToInventory(APickup* Item)
 
 		if (AvailableSlot != INDEX_NONE)
 		{
+			GLog->Log("Added item on slot num:" + AvailableSlot);
 			Inventory[AvailableSlot] = Item;
 			return true;
 		}
@@ -194,17 +209,35 @@ bool AMysticalForestCharacter::AddItemToInventory(APickup* Item)
 
 UTexture2D* AMysticalForestCharacter::GetThumbnailAtInventorySlot(int32 Slot)
 {
-	return nullptr;
+	GLog->Log("Trying to get pickup, but it's null");
+	if (Inventory[Slot] != NULL)
+	{
+		GLog->Log("Trying to get pickup thumnail at slot:" + Slot);
+		if (Inventory[Slot]->PickupThumbnail == nullptr) {
+			GLog->Log("Trying to get pickup thumnail at slot, but it's null");
+		}
+		return Inventory[Slot]->PickupThumbnail;
+	}
+	else return nullptr;
 }
 
 FString AMysticalForestCharacter::GetItemNameAtInventorySlot(int32 Slot)
 {
-	return FString();
+	if (Inventory[Slot] != NULL)
+	{
+		return Inventory[Slot]->ItemName;
+	}
+	else return FString("None");
 }
 
 bool AMysticalForestCharacter::UseItemAtInventorySlot(int32 Slot)
 {
-
+	if (Inventory[Slot] != NULL)
+	{
+		Inventory[Slot]->Use_Implementation();
+		Inventory[Slot] = NULL;
+		return true;
+	}
 	return false;
 }
 
