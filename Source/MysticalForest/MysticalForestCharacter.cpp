@@ -194,7 +194,6 @@ bool AMysticalForestCharacter::AddItemToInventory(APickup* Item)
 
 		if (AvailableSlot != INDEX_NONE)
 		{
-			GLog->Log("Added item on slot num:" + AvailableSlot);
 			Inventory[AvailableSlot] = Item;
 			return true;
 		}
@@ -209,12 +208,9 @@ bool AMysticalForestCharacter::AddItemToInventory(APickup* Item)
 
 UTexture2D* AMysticalForestCharacter::GetThumbnailAtInventorySlot(int32 Slot)
 {
-	GLog->Log("Trying to get pickup, but it's null");
 	if (Inventory[Slot] != NULL)
 	{
-		GLog->Log("Trying to get pickup thumnail at slot:" + Slot);
 		if (Inventory[Slot]->PickupThumbnail == nullptr) {
-			GLog->Log("Trying to get pickup thumnail at slot, but it's null");
 		}
 		return Inventory[Slot]->PickupThumbnail;
 	}

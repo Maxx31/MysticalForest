@@ -3,6 +3,8 @@
 
 #include "CoreMinimal.h"
 #include "Inventory/Interactable.h"
+#include "ItemBaseStruct.h"
+
 #include "Pickup.generated.h"
 
 /**
@@ -25,6 +27,9 @@ public:
 	void Use();
 
 	virtual void Use_Implementation();
+
+	UPROPERTY(EditAnywhere, Category = "Pickup Properties")
+	FDataTableRowHandle ItemInfo;
 
 	UPROPERTY(EditAnywhere, Category = "Pickup Properties")
 	FString ItemName;

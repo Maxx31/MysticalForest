@@ -25,6 +25,10 @@ void APickup::Interact_Implementation()
 {
 	AMysticalForestCharacter* Character = Cast<AMysticalForestCharacter>(UGameplayStatics::GetPlayerCharacter(this, 0)); 
 
+	FInventoryItem* NewItem = ItemInfo.GetRow<FInventoryItem>(ItemInfo.RowName.ToString());
+	if(NewItem != nullptr)
+	UE_LOG(LogTemp, Warning, TEXT("You picked up %s"), *(NewItem->Name) );
+	
 	if (Character->AddItemToInventory(this))
 	{
 		OnPickedUp();
