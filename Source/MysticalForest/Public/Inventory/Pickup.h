@@ -38,4 +38,5 @@ public:
 	UTexture2D* PickupThumbnail;
 
 	void OnPickedUp();
+	void NuhatBebru();
 };
