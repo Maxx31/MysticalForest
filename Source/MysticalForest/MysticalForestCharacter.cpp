@@ -18,6 +18,9 @@
 
 AMysticalForestCharacter::AMysticalForestCharacter()
 {
+	AutoPossessPlayer = EAutoReceiveInput::Player0;
+
+
 	// Character doesnt have a rifle at start
 	bHasRifle = false;
 	
