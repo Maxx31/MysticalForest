@@ -14,11 +14,17 @@ struct FInventoryItem: public FTableRowBase
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     FString Name;
 
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-     UTexture2D* Icon;
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (MultiLine = "true"))
+    FString Description;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    int32 Quantity;
+    UTexture2D* Icon;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    bool IsStuckable;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    int32 StackSize;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     TArray<FDataTableRowHandle>CraftItems;

@@ -11,13 +11,13 @@ APickup::APickup()
 	InteractableMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Pickup mesh"));
 	InteractableMesh->SetSimulatePhysics(true);
 
-	ItemName = FString("Enter an item name here...");
-	InteractableHelpText = FString("Press E to pick item up.");
 }
 
 void APickup::BeginPlay()
 {
-	InteractableHelpText = FString::Printf(TEXT("%s: Press E to pick up"), *ItemName);
+	ItemInfo = ItemInfoData.GetRow<FInventoryItem>(ItemInfoData.RowName.ToString());;
+	InteractableHelpText = FString::Printf(TEXT("%s: Press E to pick up"), *(ItemInfo->Name));
+
 }
 
 
@@ -25,9 +25,8 @@ void APickup::Interact_Implementation()
 {
 	AMysticalForestCharacter* Character = Cast<AMysticalForestCharacter>(UGameplayStatics::GetPlayerCharacter(this, 0)); 
 
-	FInventoryItem* NewItem = ItemInfo.GetRow<FInventoryItem>(ItemInfo.RowName.ToString());
-	if(NewItem != nullptr)
-	UE_LOG(LogTemp, Warning, TEXT("You picked up %s"), *(NewItem->Name) );
+	if(ItemInfo != nullptr)
+	UE_LOG(LogTemp, Warning, TEXT("You picked up %s"), *(ItemInfo->Name) );
 	
 	if (Character->AddItemToInventory(this))
 	{

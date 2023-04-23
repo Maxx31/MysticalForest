@@ -29,14 +29,12 @@ public:
 	virtual void Use_Implementation();
 
 	UPROPERTY(EditAnywhere, Category = "Pickup Properties")
-	FDataTableRowHandle ItemInfo;
-
-	UPROPERTY(EditAnywhere, Category = "Pickup Properties")
-	FString ItemName;
-
-	UPROPERTY(EditAnywhere, Category = "Pickup Properties")
-	UTexture2D* PickupThumbnail;
+	FDataTableRowHandle ItemInfoData;
 
 	void OnPickedUp();
-	void NuhatBebru();
+
+	FInventoryItem* GetItemInfo() const { return ItemInfo; }
+
+private:
+	FInventoryItem* ItemInfo;
 };

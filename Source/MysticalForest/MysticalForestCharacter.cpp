@@ -57,7 +57,7 @@ void AMysticalForestCharacter::BeginPlay()
 		}
 	}
 
-	Inventory.SetNum(4);
+	Inventory.SetNum(InventorySize);
 
 	CurrentInteractable = nullptr;
 }
@@ -210,9 +210,10 @@ UTexture2D* AMysticalForestCharacter::GetThumbnailAtInventorySlot(int32 Slot)
 {
 	if (Inventory[Slot] != NULL)
 	{
-		if (Inventory[Slot]->PickupThumbnail == nullptr) {
+		if (Inventory[Slot] == nullptr)
+		{
 		}
-		return Inventory[Slot]->PickupThumbnail;
+		return Inventory[Slot]->GetItemInfo()->Icon;
 	}
 	else return nullptr;
 }
@@ -221,7 +222,7 @@ FString AMysticalForestCharacter::GetItemNameAtInventorySlot(int32 Slot)
 {
 	if (Inventory[Slot] != NULL)
 	{
-		return Inventory[Slot]->ItemName;
+		return Inventory[Slot]->GetItemInfo()->Name;
 	}
 	else return FString("None");
 }

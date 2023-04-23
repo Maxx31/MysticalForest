@@ -56,18 +56,16 @@ class AMysticalForestCharacter : public ACharacter
 
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Camera, meta = (AllowPrivateAccess = "true"))
-		float CharacterDefaultMovementSpeed = 450;
+	float CharacterDefaultMovementSpeed = 450;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Camera, meta = (AllowPrivateAccess = "true"))
-		float CharacterRunMovementSpeed = 650;
+	float CharacterRunMovementSpeed = 650;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Inventory, meta = (AllowPrivateAccess = "true"))
 	float RichOfLaneTraceInteraction = 250;
 
-
-protected:
-	virtual void BeginPlay();
-	virtual void Tick(float DeltaTime) override;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Inventory, meta = (AllowPrivateAccess = "true"))
+	int InventorySize = 32;
 
 public:
 	AMysticalForestCharacter();
@@ -103,7 +101,15 @@ public:
 	UFUNCTION(BlueprintPure, Category = "Inventory")
 	bool UseItemAtInventorySlot(int32 Slot);
 
+	/** Returns Mesh1P subobject **/
+	USkeletalMeshComponent* GetMesh1P() const { return Mesh1P; }
+	/** Returns FirstPersonCameraComponent subobject **/
+	UCameraComponent* GetFirstPersonCameraComponent() const { return FirstPersonCameraComponent; }
+
 protected:
+	virtual void BeginPlay();
+	virtual void Tick(float DeltaTime) override;
+
 	/** Called for movement input */
 	virtual void SetupPlayerInputComponent(UInputComponent* InputComponent) override;
 
@@ -125,13 +131,5 @@ protected:
 
 	UPROPERTY(EditAnywhere)
 	TArray<APickup*>Inventory;
-
-public:
-	/** Returns Mesh1P subobject **/
-	USkeletalMeshComponent* GetMesh1P() const { return Mesh1P; }
-	/** Returns FirstPersonCameraComponent subobject **/
-	UCameraComponent* GetFirstPersonCameraComponent() const { return FirstPersonCameraComponent; }
-
-
 };
 
