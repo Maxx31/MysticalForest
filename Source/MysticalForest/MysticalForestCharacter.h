@@ -99,6 +99,12 @@ public:
 	FString GetItemNameAtInventorySlot(int32 Slot);
 
 	UFUNCTION(BlueprintPure, Category = "Inventory")
+	int GetItemsAmmountAtInventorySlot(int32 Slot);
+
+	UFUNCTION(BlueprintPure, Category = "Inventory")
+	bool SwapItemSlots(int32 BeginSlot, int32 EndSlot);
+
+	UFUNCTION(BlueprintPure, Category = "Inventory")
 	bool UseItemAtInventorySlot(int32 Slot);
 
 	/** Returns Mesh1P subobject **/
@@ -131,5 +137,8 @@ protected:
 
 	UPROPERTY(EditAnywhere)
 	TArray<APickup*>Inventory;
+
+	UPROPERTY(EditAnywhere)
+	TArray<int>ItemsAmmount;
 };
 

@@ -31,6 +31,9 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Pickup Properties")
 	FDataTableRowHandle ItemInfoData;
 
+	UPROPERTY(EditAnywhere, Category = "Pickup Properties")
+	int AmmountOfItems = 1;
+
 	void OnPickedUp();
 
 	FInventoryItem* GetItemInfo() const { return ItemInfo; }

@@ -61,6 +61,7 @@ void AMysticalForestCharacter::BeginPlay()
 	}
 
 	Inventory.SetNum(InventorySize);
+	ItemsAmmount.SetNum(InventorySize);
 
 	CurrentInteractable = nullptr;
 }
@@ -198,6 +199,8 @@ bool AMysticalForestCharacter::AddItemToInventory(APickup* Item)
 		if (AvailableSlot != INDEX_NONE)
 		{
 			Inventory[AvailableSlot] = Item;
+			ItemsAmmount[AvailableSlot] = Item->AmmountOfItems;
+
 			return true;
 		}
 		else
@@ -228,6 +231,27 @@ FString AMysticalForestCharacter::GetItemNameAtInventorySlot(int32 Slot)
 		return Inventory[Slot]->GetItemInfo()->Name;
 	}
 	else return FString("None");
+}
+
+
+int AMysticalForestCharacter::GetItemsAmmountAtInventorySlot(int32 Slot)
+{
+	return ItemsAmmount[Slot];
+}
+
+bool AMysticalForestCharacter::SwapItemSlots(int32 BeginSlot, int32 EndSlot)
+{
+	if (Inventory[BeginSlot] != NULL)
+	{
+		Inventory.Swap(BeginSlot, EndSlot);
+		ItemsAmmount.Swap(BeginSlot, EndSlot);
+
+		return true;
+	}
+	else 
+	{
+		return false;
+	}
 }
 
 bool AMysticalForestCharacter::UseItemAtInventorySlot(int32 Slot)
