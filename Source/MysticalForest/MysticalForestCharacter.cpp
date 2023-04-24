@@ -194,20 +194,46 @@ bool AMysticalForestCharacter::AddItemToInventory(APickup* Item)
 {
 	if (Item != nullptr) 
 	{
-		const int32 AvailableSlot = Inventory.Find(nullptr);
+		int32 AvailableSlot = INDEX_NONE;
+		
 
-		if (AvailableSlot != INDEX_NONE)
+		if (Item->GetItemInfo()->IsStuckable)
 		{
-			Inventory[AvailableSlot] = Item;
-			ItemsAmmount[AvailableSlot] = Item->AmmountOfItems;
+			int32 AmmountOfItemsToAdd;
 
-			return true;
+			for (int i = 0; i < InventorySize; i++)
+			{
+				if (Inventory[i] == nullptr) continue;
+
+				if(Inventory[i]->GetItemInfo() == Item->GetItemInfo())
+				{
+					AmmountOfItemsToAdd = FMath::Min(Inventory[i]->GetItemInfo()->StackSize - ItemsAmmount[i], Item->AmmountOfItems);
+
+					Item->AmmountOfItems -= AmmountOfItemsToAdd;
+					ItemsAmmount[i] += AmmountOfItemsToAdd;
+				}
+				if (Item->AmmountOfItems <= 0) break;
+			}
 		}
-		else
+
+		if (Item->AmmountOfItems > 0)
 		{
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("You cant carry any more item!"));
-			return false;
+			AvailableSlot = Inventory.Find(nullptr);
+
+			if (AvailableSlot != INDEX_NONE)
+			{
+				Inventory[AvailableSlot] = Item;
+				ItemsAmmount[AvailableSlot] = Item->AmmountOfItems;
+
+				return true;
+			}
+			else
+			{
+				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("You cant carry any more item!"));
+				return false;
+			}
 		}
+		else return true;
 	}
 	else return false;
 }

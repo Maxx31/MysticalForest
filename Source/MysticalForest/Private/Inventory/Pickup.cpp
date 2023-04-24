@@ -18,6 +18,12 @@ void APickup::BeginPlay()
 	ItemInfo = ItemInfoData.GetRow<FInventoryItem>(ItemInfoData.RowName.ToString());;
 	InteractableHelpText = FString::Printf(TEXT("%s: Press E to pick up"), *(ItemInfo->Name));
 
+	if (AmmountOfItems > ItemInfo->StackSize)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Ammount of item is bigger than max stack size in item %s!!"), *(ItemInfo->Name));
+		AmmountOfItems = ItemInfo->StackSize;
+	}
+
 }
 
 
