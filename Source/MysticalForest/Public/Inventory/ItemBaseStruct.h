@@ -21,7 +21,10 @@ struct FInventoryItem: public FTableRowBase
     UTexture2D* Icon;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    bool IsStuckable;
+    UStaticMesh* Mesh;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    bool IsStackable;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     int32 StackSize;

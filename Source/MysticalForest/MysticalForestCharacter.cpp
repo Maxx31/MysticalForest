@@ -197,7 +197,7 @@ bool AMysticalForestCharacter::AddItemToInventory(APickup* Item)
 		int32 AvailableSlot = INDEX_NONE;
 		
 
-		if (Item->GetItemInfo()->IsStuckable)
+		if (Item->GetItemInfo()->IsStackable)
 		{
 			int32 AmmountOfItemsToAdd;
 
@@ -272,7 +272,7 @@ bool AMysticalForestCharacter::SwapItemSlots(int32 BeginSlot, int32 EndSlot)
 	{
 		if (Inventory[EndSlot] != NULL) 
 		{ // Check to stack items
-			if (Inventory[BeginSlot]->GetItemInfo()->IsStuckable &&
+			if (Inventory[BeginSlot]->GetItemInfo()->IsStackable &&
 				Inventory[BeginSlot]->GetItemInfo() == Inventory[EndSlot]->GetItemInfo() &&
 				ItemsAmmount[EndSlot] < Inventory[EndSlot]->GetItemInfo()->StackSize)
 			{
