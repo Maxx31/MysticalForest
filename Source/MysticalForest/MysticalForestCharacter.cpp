@@ -265,10 +265,26 @@ int AMysticalForestCharacter::GetItemsAmmountAtInventorySlot(int32 Slot)
 	return ItemsAmmount[Slot];
 }
 
+
 bool AMysticalForestCharacter::SwapItemSlots(int32 BeginSlot, int32 EndSlot)
 {
 	if (Inventory[BeginSlot] != NULL)
 	{
+		if (Inventory[EndSlot] != NULL) 
+		{ // Check to stack items
+			if (Inventory[BeginSlot]->GetItemInfo()->IsStuckable &&
+				Inventory[BeginSlot]->GetItemInfo() == Inventory[EndSlot]->GetItemInfo() &&
+				ItemsAmmount[EndSlot] < Inventory[EndSlot]->GetItemInfo()->StackSize)
+			{
+				int32 AmmountOfItemsToAdd = FMath::Min(Inventory[EndSlot]->GetItemInfo()->StackSize - ItemsAmmount[EndSlot], ItemsAmmount[BeginSlot]);
+
+				ItemsAmmount[BeginSlot] -= AmmountOfItemsToAdd;
+				ItemsAmmount[EndSlot] += AmmountOfItemsToAdd;
+
+				return true;
+			}
+		}
+
 		Inventory.Swap(BeginSlot, EndSlot);
 		ItemsAmmount.Swap(BeginSlot, EndSlot);
 
