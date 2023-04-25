@@ -32,7 +32,7 @@ void APickup::Interact_Implementation()
 	AMysticalForestCharacter* Character = Cast<AMysticalForestCharacter>(UGameplayStatics::GetPlayerCharacter(this, 0)); 
 
 	if(ItemInfo != nullptr)
-	UE_LOG(LogTemp, Warning, TEXT("You picked up %s"), *(ItemInfo->Name) );
+//	UE_LOG(LogTemp, Warning, TEXT("You picked up %s"), *(ItemInfo->Name) );
 	
 	if (Character->AddItemToInventory(this))
 	{

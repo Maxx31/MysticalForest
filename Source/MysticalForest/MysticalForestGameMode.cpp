@@ -32,7 +32,6 @@ UUserWidget* AMysticalForestGameMode::AddHUD(TSubclassOf<class UUserWidget> Widg
 
 	if (WidgetToAdd != nullptr)
 	{
-		GLog->Log("Hud was added");
 		Controller->bShowMouseCursor = ShowMouseCursor; 
 		Controller->bEnableClickEvents = EnableCLickEvents;
 
@@ -48,7 +47,6 @@ UUserWidget* AMysticalForestGameMode::AddHUD(TSubclassOf<class UUserWidget> Widg
 
 void AMysticalForestGameMode::OpenInventoryWidget()
 {
-	GLog->Log("Open inventory");
 
 	if(InventoryUserWidget != nullptr)
 	{
@@ -66,7 +64,6 @@ void AMysticalForestGameMode::OpenInventoryWidget()
 
 void AMysticalForestGameMode::CloseInventoryWidget()
 {
-	GLog->Log("Close inventory");
 
 	if (InventoryUserWidget != nullptr)
 	{
