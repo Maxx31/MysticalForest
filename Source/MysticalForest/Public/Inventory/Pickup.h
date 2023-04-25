@@ -36,6 +36,7 @@ public:
 
 	void OnPickedUp();
 
+	void SetItemInfo(FInventoryItem* NewItemInfo);
 	FInventoryItem* GetItemInfo() const { return ItemInfo; }
 
 private:

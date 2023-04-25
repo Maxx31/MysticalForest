@@ -17,4 +17,7 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Slots", meta = (ExposeOnSpawn = "true"))
 	int32 SlotIndex;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MouseData", meta = (ExposeOnSpawn = "true"))
+	bool IsLeftMouseButtonDrag = true;
 };

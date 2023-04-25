@@ -266,7 +266,7 @@ int AMysticalForestCharacter::GetItemsAmmountAtInventorySlot(int32 Slot)
 }
 
 
-bool AMysticalForestCharacter::SwapItemSlots(int32 BeginSlot, int32 EndSlot)
+bool AMysticalForestCharacter::SwapItemSlots(int32 BeginSlot, int32 EndSlot, bool IsLeftMouseButton)
 {
 	if (Inventory[BeginSlot] != NULL)
 	{
@@ -276,15 +276,39 @@ bool AMysticalForestCharacter::SwapItemSlots(int32 BeginSlot, int32 EndSlot)
 				Inventory[BeginSlot]->GetItemInfo() == Inventory[EndSlot]->GetItemInfo() &&
 				ItemsAmmount[EndSlot] < Inventory[EndSlot]->GetItemInfo()->StackSize)
 			{
-				int32 AmmountOfItemsToAdd = FMath::Min(Inventory[EndSlot]->GetItemInfo()->StackSize - ItemsAmmount[EndSlot], ItemsAmmount[BeginSlot]);
+				UE_LOG(LogTemp, Warning, TEXT("We try to stack items"));
+				int32 AmmountOfItemsToAdd;
+				if (IsLeftMouseButton)// Drag with left mouse button
+				{
+					AmmountOfItemsToAdd = FMath::Min(Inventory[EndSlot]->GetItemInfo()->StackSize - ItemsAmmount[EndSlot], ItemsAmmount[BeginSlot]);
+				}//Else, if user drag with right mouse button, then we take only one object
+				else {
+					AmmountOfItemsToAdd = 1;
+					UE_LOG(LogTemp, Warning, TEXT("Right mouse was pressed"));
+				}
 
 				ItemsAmmount[BeginSlot] -= AmmountOfItemsToAdd;
 				ItemsAmmount[EndSlot] += AmmountOfItemsToAdd;
 
+				if (ItemsAmmount[BeginSlot] <= 0) Inventory[BeginSlot] = NULL;
+
 				return true;
 			}
 		}
+		else
+		{
+			if (!IsLeftMouseButton && Inventory[BeginSlot]->GetItemInfo()->IsStackable && ItemsAmmount[BeginSlot] > 1)
+			{
+				APickup* NewPickup = NewObject<APickup>();
+				NewPickup->SetItemInfo(Inventory[BeginSlot]->GetItemInfo());
 
+				Inventory[EndSlot] = NewPickup;
+				ItemsAmmount[EndSlot] = 1;
+
+				ItemsAmmount[BeginSlot]--;
+				return true;
+			}
+		}
 		Inventory.Swap(BeginSlot, EndSlot);
 		ItemsAmmount.Swap(BeginSlot, EndSlot);
 

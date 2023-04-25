@@ -50,3 +50,8 @@ void APickup::OnPickedUp()
 	InteractableMesh->SetSimulatePhysics(false);
 	InteractableMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }
+
+void APickup::SetItemInfo(FInventoryItem* NewItemInfo)
+{
+	ItemInfo = NewItemInfo;
+}

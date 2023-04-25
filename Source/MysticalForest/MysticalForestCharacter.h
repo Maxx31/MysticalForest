@@ -102,7 +102,7 @@ public:
 	int GetItemsAmmountAtInventorySlot(int32 Slot);
 
 	UFUNCTION(BlueprintPure, Category = "Inventory")
-	bool SwapItemSlots(int32 BeginSlot, int32 EndSlot);
+	bool SwapItemSlots(int32 BeginSlot, int32 EndSlot, bool IsLeftMouseButton);
 
 	UFUNCTION(BlueprintPure, Category = "Inventory")
 	bool UseItemAtInventorySlot(int32 Slot);
