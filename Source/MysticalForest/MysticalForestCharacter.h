@@ -107,6 +107,9 @@ public:
 	UFUNCTION(BlueprintPure, Category = "Inventory")
 	bool UseItemAtInventorySlot(int32 Slot);
 
+	UFUNCTION(BlueprintPure, Category = "Inventory")
+	FString GetHelpText();
+
 	/** Returns Mesh1P subobject **/
 	USkeletalMeshComponent* GetMesh1P() const { return Mesh1P; }
 	/** Returns FirstPersonCameraComponent subobject **/

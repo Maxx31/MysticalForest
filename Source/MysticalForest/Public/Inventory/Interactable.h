@@ -30,5 +30,5 @@ public:
         class UStaticMeshComponent* InteractableMesh;
 
     UPROPERTY(EditAnywhere, Category = "Interactable Properties")
-        FString InteractableHelpText;
+     FString InteractableHelpText;
 };

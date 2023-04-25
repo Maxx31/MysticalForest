@@ -307,6 +307,11 @@ bool AMysticalForestCharacter::UseItemAtInventorySlot(int32 Slot)
 	return false;
 }
 
+FString AMysticalForestCharacter::GetHelpText()
+{
+	return HelpText;
+}
+
 void AMysticalForestCharacter::SetHasRifle(bool bNewHasRifle)
 {
 	bHasRifle = bNewHasRifle;
