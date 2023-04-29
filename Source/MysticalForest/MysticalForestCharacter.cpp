@@ -95,6 +95,17 @@ void AMysticalForestCharacter::SetupPlayerInputComponent(class UInputComponent* 
 		//Inventory
 		EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Started, this, &AMysticalForestCharacter::Interact);
 		EnhancedInputComponent->BindAction(OpenInventoryAction, ETriggerEvent::Started, this, &AMysticalForestCharacter::ToggleInventory);
+
+		//Choosing active slot
+		EnhancedInputComponent->BindAction(ChooseSlot1Action, ETriggerEvent::Started, this, &AMysticalForestCharacter::ChooseActiveSlot, 0);
+		EnhancedInputComponent->BindAction(ChooseSlot2Action, ETriggerEvent::Started, this, &AMysticalForestCharacter::ChooseActiveSlot, 1);
+		EnhancedInputComponent->BindAction(ChooseSlot3Action, ETriggerEvent::Started, this, &AMysticalForestCharacter::ChooseActiveSlot, 2);
+		EnhancedInputComponent->BindAction(ChooseSlot4Action, ETriggerEvent::Started, this, &AMysticalForestCharacter::ChooseActiveSlot, 3);
+		EnhancedInputComponent->BindAction(ChooseSlot5Action, ETriggerEvent::Started, this, &AMysticalForestCharacter::ChooseActiveSlot, 4);
+		EnhancedInputComponent->BindAction(ChooseSlot6Action, ETriggerEvent::Started, this, &AMysticalForestCharacter::ChooseActiveSlot, 5);
+		EnhancedInputComponent->BindAction(ChooseSlot7Action, ETriggerEvent::Started, this, &AMysticalForestCharacter::ChooseActiveSlot, 6);
+		EnhancedInputComponent->BindAction(ChooseSlot8Action, ETriggerEvent::Started, this, &AMysticalForestCharacter::ChooseActiveSlot, 7);
+
 	}
 }
 
@@ -190,6 +201,14 @@ void AMysticalForestCharacter::CheckForInteractables()
 	}
 }
 
+void AMysticalForestCharacter::ChooseActiveSlot(int32 slotIndex)
+{
+	UE_LOG(LogTemp, Warning, TEXT("New active slot index = %d!!"), slotIndex);
+	ActiveItemSlot = slotIndex;
+}
+
+
+
 bool AMysticalForestCharacter::AddItemToInventory(APickup* Item)
 {
 	if (Item != nullptr) 
@@ -240,6 +259,11 @@ bool AMysticalForestCharacter::AddItemToInventory(APickup* Item)
 
 UTexture2D* AMysticalForestCharacter::GetThumbnailAtInventorySlot(int32 Slot)
 {
+	if (Slot < 0 || Slot >= Inventory.Num())
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Slot num is not in Inventory array size bounds!"));
+		return nullptr;
+	}
 	if (Inventory[Slot] != NULL)
 	{
 		if (Inventory[Slot] == nullptr)
@@ -268,6 +292,7 @@ int AMysticalForestCharacter::GetItemsAmmountAtInventorySlot(int32 Slot)
 
 bool AMysticalForestCharacter::SwapItemSlots(int32 BeginSlot, int32 EndSlot, bool IsLeftMouseButton)
 {
+
 	if (Inventory[BeginSlot] != NULL)
 	{
 		if (Inventory[EndSlot] != NULL) 

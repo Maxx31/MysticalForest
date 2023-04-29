@@ -31,6 +31,9 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "HUD Widgets")
 	TSubclassOf<class UUserWidget> InventoryHUDClass;
 
+	UFUNCTION(BlueprintPure, Category = "Inventory")
+	bool IsInventoryhWidgetOpened() const { return IsInventoryOpened; }
+
 	UUserWidget* InventoryUserWidget;
 	APlayerController* Controller;
 
