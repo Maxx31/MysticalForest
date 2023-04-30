@@ -22,7 +22,7 @@ protected:
 public:
 
     UFUNCTION(BlueprintNativeEvent)
-        void Interact();
+    void Interact();
 
     virtual void Interact_Implementation();
 

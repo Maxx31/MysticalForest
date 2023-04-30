@@ -20,13 +20,14 @@ public:
 	APickup();
 	virtual void BeginPlay() override;
 
-
 	virtual void Interact_Implementation() override;
 	
 	UFUNCTION(BlueprintNativeEvent)
 	void Use();
 
 	virtual void Use_Implementation();
+
+	virtual void UseLMB_Implementation();
 
 	UPROPERTY(EditAnywhere, Category = "Pickup Properties")
 	FDataTableRowHandle ItemInfoData;

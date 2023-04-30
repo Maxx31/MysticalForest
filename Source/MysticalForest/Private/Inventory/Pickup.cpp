@@ -36,12 +36,16 @@ void APickup::Interact_Implementation()
 	{
 		OnPickedUp();
 	}
-
 }
 
 void APickup::Use_Implementation()
 {
-	GLog->Log("Use() from base pickup class : You should not see this");
+	UE_LOG(LogTemp, Warning, TEXT("Use() from base pickup class : You should not see this"));
+}
+
+void APickup::UseLMB_Implementation()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Use LMb() from base pickup class : You should not see this"));
 }
 
 void APickup::OnPickedUp()

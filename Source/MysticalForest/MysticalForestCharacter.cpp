@@ -11,6 +11,7 @@
 #include "MysticalForestGameMode.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include <Actions/PawnAction.h>
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -36,14 +37,17 @@ AMysticalForestCharacter::AMysticalForestCharacter()
 
 	// Create a mesh component that will be used when being viewed from a '1st person' view (when controlling this pawn)
 	Mesh1P = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("CharacterMesh1P"));
+
 	Mesh1P->SetOwnerNoSee(true);
-	//Mesh1P->SetOnlyOwnerSee(true);
 	Mesh1P->SetupAttachment(FirstPersonCameraComponent);
+
+	Mesh1P->SetupAttachment(GetCapsuleComponent());
 	Mesh1P->bCastDynamicShadow = true;
 	Mesh1P->CastShadow = true;
-	//Mesh1P->SetRelativeRotation(FRotator(0.9f, -19.19f, 5.2f));
-	Mesh1P->SetRelativeLocation(FVector(-30.f, 0.f, -150.f));
 
+	Mesh1P->SetRelativeLocation(FVector(-30.f, 0.f, -100.f));
+
+	bUseControllerRotationYaw = false;
 }
 
 void AMysticalForestCharacter::BeginPlay()
@@ -203,8 +207,11 @@ void AMysticalForestCharacter::CheckForInteractables()
 
 void AMysticalForestCharacter::ChooseActiveSlot(int32 slotIndex)
 {
+	if (ActiveItemSlot == slotIndex) return;
+
 	UE_LOG(LogTemp, Warning, TEXT("New active slot index = %d!!"), slotIndex);
 	ActiveItemSlot = slotIndex;
+	EquipActiveItemAtActiveSlot();
 }
 
 
@@ -244,6 +251,7 @@ bool AMysticalForestCharacter::AddItemToInventory(APickup* Item)
 				Inventory[AvailableSlot] = Item;
 				ItemsAmmount[AvailableSlot] = Item->AmmountOfItems;
 
+				if (AvailableSlot == ActiveItemSlot)EquipActiveItemAtActiveSlot();
 				return true;
 			}
 			else
@@ -345,6 +353,8 @@ bool AMysticalForestCharacter::SwapItemSlots(int32 BeginSlot, int32 EndSlot, boo
 	}
 }
 
+
+
 bool AMysticalForestCharacter::UseItemAtInventorySlot(int32 Slot)
 {
 	if (Inventory[Slot] != NULL)
@@ -354,6 +364,42 @@ bool AMysticalForestCharacter::UseItemAtInventorySlot(int32 Slot)
 		return true;
 	}
 	return false;
+}
+
+
+void AMysticalForestCharacter::EquipActiveItemAtActiveSlot()
+{
+	DisEquipActiveItemAtActiveSlot();
+
+	if (Inventory[ActiveItemSlot] != NULL)
+	{
+		if  (Inventory[ActiveItemSlot]->GetItemInfo()->Mesh != nullptr)
+		{
+			const FTransform socket_transform = GetMesh1P()->GetSocketTransform(TEXT("Item_Socket"), ERelativeTransformSpace::RTS_World);
+			
+			FTransform newTransform = Inventory[ActiveItemSlot]->GetActorTransform();
+			newTransform.SetLocation(socket_transform.GetLocation());
+			newTransform.SetRotation(socket_transform.GetRotation());
+
+			Inventory[ActiveItemSlot]->SetActorTransform(newTransform);
+			Inventory[ActiveItemSlot]->AttachToComponent(Mesh1P, FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("Item_Socket"));
+			Inventory[ActiveItemSlot]->InteractableMesh->SetVisibility(true);
+
+			CurrentMeshEquiped = ActiveItemSlot;
+		}
+	}
+}
+
+void AMysticalForestCharacter::DisEquipActiveItemAtActiveSlot()
+{
+	if (Inventory[CurrentMeshEquiped] != NULL)
+	{
+		if (Inventory[CurrentMeshEquiped]->GetItemInfo()->Mesh != nullptr)
+		{
+			Inventory[CurrentMeshEquiped]->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
+			Inventory[CurrentMeshEquiped]->InteractableMesh->SetVisibility(false);
+		}
+	}
 }
 
 FString AMysticalForestCharacter::GetHelpText()

@@ -94,6 +94,8 @@ class AMysticalForestCharacter : public ACharacter
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Inventory, meta = (AllowPrivateAccess = "true"))
 	int ActiveItemSlot = 0;
 
+	int CurrentMeshEquiped = 0;
+
 public:
 	AMysticalForestCharacter();
 	 
@@ -134,6 +136,12 @@ public:
 	UFUNCTION(BlueprintPure, Category = "Inventory")
 	bool UseItemAtInventorySlot(int32 Slot);
 
+	UFUNCTION(BlueprintCallable, Category = "Inventory")
+	void EquipActiveItemAtActiveSlot();
+
+	UFUNCTION(BlueprintCallable, Category = "Inventory")
+	void DisEquipActiveItemAtActiveSlot();
+
 	UFUNCTION(BlueprintPure, Category = "Inventory")
 	FString GetHelpText();
 
@@ -172,5 +180,7 @@ protected:
 
 	UPROPERTY(EditAnywhere)
 	TArray<int>ItemsAmmount;
+
+	
 };
 
