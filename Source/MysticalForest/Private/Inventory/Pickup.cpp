@@ -50,7 +50,6 @@ void APickup::UseLMB_Implementation()
 
 void APickup::OnPickedUp()
 {
-	InteractableMesh->SetVisibility(false);
 	InteractableMesh->SetSimulatePhysics(false);
 	InteractableMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }

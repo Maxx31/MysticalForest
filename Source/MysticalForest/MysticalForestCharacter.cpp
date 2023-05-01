@@ -251,7 +251,10 @@ bool AMysticalForestCharacter::AddItemToInventory(APickup* Item)
 				Inventory[AvailableSlot] = Item;
 				ItemsAmmount[AvailableSlot] = Item->AmmountOfItems;
 
-				if (AvailableSlot == ActiveItemSlot)EquipActiveItemAtActiveSlot();
+				UE_LOG(LogTemp, Warning, TEXT("Available slot = %d, ActiveItemSLot = %d"), AvailableSlot, ActiveItemSlot);
+
+				if (AvailableSlot == ActiveItemSlot && Item->GetItemInfo()->Mesh != nullptr) EquipActiveItemAtActiveSlot();
+				else Item->InteractableMesh->SetVisibility(false);
 				return true;
 			}
 			else
@@ -260,7 +263,11 @@ bool AMysticalForestCharacter::AddItemToInventory(APickup* Item)
 				return false;
 			}
 		}
-		else return true;
+		else 
+		{
+			Item->InteractableMesh->SetVisibility(false);
+			return true;
+		}
 	}
 	else return false;
 }
@@ -300,6 +307,9 @@ int AMysticalForestCharacter::GetItemsAmmountAtInventorySlot(int32 Slot)
 
 bool AMysticalForestCharacter::SwapItemSlots(int32 BeginSlot, int32 EndSlot, bool IsLeftMouseButton)
 {
+	if (BeginSlot == EndSlot)return false;
+
+	if (BeginSlot == ActiveItemSlot || EndSlot == ActiveItemSlot) DisEquipActiveItemAtActiveSlot();
 
 	if (Inventory[BeginSlot] != NULL)
 	{
@@ -309,7 +319,6 @@ bool AMysticalForestCharacter::SwapItemSlots(int32 BeginSlot, int32 EndSlot, boo
 				Inventory[BeginSlot]->GetItemInfo() == Inventory[EndSlot]->GetItemInfo() &&
 				ItemsAmmount[EndSlot] < Inventory[EndSlot]->GetItemInfo()->StackSize)
 			{
-				UE_LOG(LogTemp, Warning, TEXT("We try to stack items"));
 				int32 AmmountOfItemsToAdd;
 				if (IsLeftMouseButton)// Drag with left mouse button
 				{
@@ -317,7 +326,6 @@ bool AMysticalForestCharacter::SwapItemSlots(int32 BeginSlot, int32 EndSlot, boo
 				}//Else, if user drag with right mouse button, then we take only one object
 				else {
 					AmmountOfItemsToAdd = 1;
-					UE_LOG(LogTemp, Warning, TEXT("Right mouse was pressed"));
 				}
 
 				ItemsAmmount[BeginSlot] -= AmmountOfItemsToAdd;
@@ -344,6 +352,8 @@ bool AMysticalForestCharacter::SwapItemSlots(int32 BeginSlot, int32 EndSlot, boo
 		}
 		Inventory.Swap(BeginSlot, EndSlot);
 		ItemsAmmount.Swap(BeginSlot, EndSlot);
+
+		if (EndSlot == ActiveItemSlot || BeginSlot == ActiveItemSlot) EquipActiveItemAtActiveSlot();
 
 		return true;
 	}

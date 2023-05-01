@@ -172,7 +172,6 @@ protected:
 
 	void ChooseActiveSlot(int32 slotIndex);
 
-
 	AInteractable* CurrentInteractable;
 
 	UPROPERTY(EditAnywhere)
